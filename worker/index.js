@@ -1,4 +1,4 @@
-// API for muratyamac.bio. Static assets are served by Workers Assets;
+// API for muratyamac.com.tr. Static assets are served by Workers Assets;
 // only /api/* reaches this code.
 
 const JOLPICA = "https://api.jolpi.ca/ergast/f1/current";
