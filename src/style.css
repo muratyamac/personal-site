@@ -263,6 +263,67 @@ mark { background: none; color: var(--yellow); }
 .section-sub { margin: 4px 0 0; color: var(--dim); }
 .grid, .pitwall, .garage, .contact { padding: clamp(80px, 12vw, 160px) var(--gutter) 0; }
 
+/* ——— Pit entry: the switch from work to hobbies ——— */
+.pitlane {
+  position: relative;
+  margin-top: clamp(96px, 14vw, 200px);
+  background:
+    radial-gradient(ellipse at 15% 0%, rgba(255, 212, 0, 0.07), transparent 55%),
+    var(--carbon-2);
+  border-block: 1px solid var(--line);
+  overflow: hidden;
+}
+.pitlane__hazard {
+  height: 12px;
+  background: repeating-linear-gradient(-45deg, var(--yellow) 0 14px, var(--carbon) 14px 28px);
+}
+.pitlane__checker {
+  height: 24px;
+  background: repeating-conic-gradient(var(--text) 0 25%, var(--carbon) 0 50%) 0 0 / 24px 24px;
+  opacity: 0.85;
+}
+.pitlane__inner {
+  position: relative;
+  display: grid;
+  gap: 28px;
+  padding: clamp(56px, 9vw, 120px) var(--gutter);
+}
+/* pit-lane line: dashed white along the left, like the real pit exit markings */
+.pitlane__inner::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--gutter) / 2 - 1px);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: repeating-linear-gradient(180deg, rgba(236, 234, 228, 0.35) 0 18px, transparent 18px 34px);
+}
+.pitlane__sign { display: flex; align-items: center; gap: 14px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); }
+.pitlane__sign b { display: inline-flex; align-items: center; gap: 6px; color: var(--green); font-weight: 600; }
+.pitlane__sign b i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: pulse 1.4s infinite; }
+.pitlane__limit {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 6px solid var(--red);
+  background: var(--text);
+  color: var(--carbon);
+  font: 900 22px/1 var(--display);
+  flex-shrink: 0;
+}
+.pitlane__title {
+  margin: 0;
+  font: 900 clamp(64px, 14vw, 220px) / 0.82 var(--display);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.pitlane__title span { color: var(--yellow); display: inline-block; }
+.pitlane__text { margin: 0; max-width: 46ch; font-size: clamp(17px, 1.6vw, 21px); color: var(--dim); }
+.pitlane + .pitwall { padding-top: clamp(72px, 10vw, 128px); }
+
+
 /* ——— Timing screen ——— */
 .timing { border-top: 2px solid var(--text); }
 .timing__head, .trow {
