@@ -288,8 +288,25 @@ mark { background: none; color: var(--yellow); }
   background: var(--c);
   transition: width 0.35s var(--ease);
 }
-a.trow:hover { background: var(--carbon-2); }
-a.trow:hover::before { width: 4px; }
+.trow.has-link:hover { background: var(--carbon-2); }
+.trow.has-link:hover::before { width: 4px; }
+.trow__link { text-decoration: none; }
+.trow__link::after { content: ""; position: absolute; inset: 0; z-index: 1; } /* whole row clickable */
+.trow__link:focus-visible { outline: none; }
+.trow:has(.trow__link:focus-visible) { outline: 2px solid var(--yellow); outline-offset: -2px; }
+.trow__sub { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; position: relative; z-index: 2; }
+.trow__sub .chip { text-decoration: none; color: var(--dim); transition: color .2s, border-color .2s; }
+.trow__sub .chip:hover { color: var(--text); border-color: var(--c); }
+.tteam {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 12px 10px;
+  border-bottom: 1px solid var(--line);
+  font-weight: 600;
+}
+.tteam i { display: inline-block; width: 10px; height: 10px; margin-right: 10px; background: var(--c); transform: skew(-12deg); }
+.tteam:not(:first-child) { margin-top: 28px; }
 .trow__pos { font: 800 36px var(--display); }
 .trow__car { display: flex; align-items: center; gap: 12px; }
 .trow__bar { width: 4px; height: 32px; background: var(--c); border-radius: 1px; }
@@ -301,7 +318,7 @@ a.trow:hover::before { width: 4px; }
 .trow__status .s--running { color: var(--green); }
 .trow__status .s--garage { color: var(--dim); }
 .trow__status .go { color: var(--dim); transition: transform 0.3s var(--ease), color 0.3s; }
-a.trow:hover .go { transform: translateX(4px); color: var(--yellow); }
+.trow.has-link:hover .go { transform: translateX(4px); color: var(--yellow); }
 .trow.garage-row { opacity: 0.55; }
 
 /* ——— Pit wall ——— */

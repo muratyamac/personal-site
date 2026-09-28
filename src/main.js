@@ -1,4 +1,4 @@
-import { profile, products, buildLog, links, garage } from "./data.js";
+import { profile, teams, products, buildLog, links, garage } from "./data.js";
 import { initCommands } from "./commands.js";
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -19,17 +19,29 @@ $("#build-steps").innerHTML = buildLog
   )
   .join("");
 
-$("#timing-rows").innerHTML = products
-  .map((p, i) => {
-    const tag = p.url ? "a" : "div";
-    const attrs = p.url ? `href="${p.url}" target="_blank" rel="noopener"` : "";
-    const running = p.status === "running";
-    return `<${tag} class="trow ${running ? "" : "garage-row"}" role="row" style="--c:${p.color}" ${attrs}>
-      <span class="trow__pos" role="cell">${String(i + 1).padStart(2, "0")}</span>
-      <span class="trow__car" role="cell"><span class="trow__bar"></span><span><strong>${esc(p.name)}</strong><small>${p.code}</small></span></span>
-      <span class="trow__desc" role="cell">${esc(p.blurb)}</span>
-      <span class="trow__status" role="cell"><span class="s s--${p.status}">${running ? "● ON TRACK" : "○ IN GARAGE"}</span>${p.url ? '<span class="go">↗</span>' : ""}</span>
-    </${tag}>`;
+let pos = 0;
+$("#timing-rows").innerHTML = teams
+  .map((t) => {
+    const rows = products
+      .filter((p) => p.team === t.name)
+      .map((p) => {
+        pos++;
+        const running = p.status === "running";
+        const name = p.url
+          ? `<a class="trow__link" href="${p.url}" target="_blank" rel="noopener">${esc(p.name)}</a>`
+          : esc(p.name);
+        const sub = p.sub?.length
+          ? `<span class="trow__sub">${p.sub.map((x) => `<a class="chip" href="${x.url}" target="_blank" rel="noopener">${esc(x.name)} ↗</a>`).join("")}</span>`
+          : "";
+        return `<div class="trow ${running ? "" : "garage-row"} ${p.url ? "has-link" : ""}" role="row" style="--c:${p.color}">
+          <span class="trow__pos" role="cell">${String(pos).padStart(2, "0")}</span>
+          <span class="trow__car" role="cell"><span class="trow__bar"></span><span><strong>${name}</strong><small>${p.code}</small></span></span>
+          <span class="trow__desc" role="cell">${esc(p.blurb)}${sub}</span>
+          <span class="trow__status" role="cell"><span class="s s--${p.status}">${running ? "● ON TRACK" : "○ IN GARAGE"}</span>${p.url ? '<span class="go" aria-hidden="true">↗</span>' : ""}</span>
+        </div>`;
+      })
+      .join("");
+    return `<div class="tteam mono" role="row" style="--c:${t.color}"><span role="cell"><i></i>${esc(t.name)}</span><span role="cell" class="dim">${t.short}</span></div>${rows}`;
   })
   .join("");
 

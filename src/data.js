@@ -9,40 +9,54 @@ export const profile = {
     "https://2.gravatar.com/avatar/15f98e0928f76f82d053c6dcbde0a369fa93fbabb94058fa76c73bd83c5abd03?s=320",
 };
 
-// The grid — products, shown as a timing screen.
+// The grid — products, grouped by company like F1 constructors.
 // status: "running" | "garage" (not public yet)
+export const teams = [
+  { name: "Odinzone Labs LLC", short: "ODZ", color: "#ffd400" },
+  { name: "Workodin LLC", short: "WKO", color: "#4ba8c4" },
+];
+
 export const products = [
   {
     code: "DSO",
     name: "Designodin",
+    team: "Odinzone Labs LLC",
     url: "https://designodin.com",
     blurb: "Web design studio — WordPress, WooCommerce and Shopify builds for US & EU businesses.",
     color: "#c47445",
     status: "running",
   },
   {
+    code: "ATL",
+    name: "Atlasway",
+    team: "Odinzone Labs LLC",
+    url: null, // TODO: real URL
+    blurb: "TODO: one-line description.",
+    color: "#8a8f98",
+    status: "running",
+  },
+  {
+    code: "GGL",
+    name: "GoneGlobe",
+    team: "Odinzone Labs LLC",
+    url: "https://goneglobe.com",
+    blurb: "Travel tools for every kind of journey — city breaks, cruises and routes planned end to end.",
+    color: "#e0a45e",
+    status: "running",
+    sub: [
+      { name: "Cityraze", url: "https://cityraze.com" },
+      { name: "Sailraze", url: "https://sailraze.com" },
+      { name: "Passraze", url: "https://passraze.com" },
+    ],
+  },
+  {
     code: "PAY",
     name: "Payodin",
+    team: "Workodin LLC",
     url: "https://payodin.com",
     blurb: "Proposals, contracts, invoices and payouts for freelancers without a company.",
     color: "#4ba8c4",
     status: "running",
-  },
-  {
-    code: "BLT",
-    name: "Boltramp",
-    url: "https://boltramp.com",
-    blurb: "Shopify speed, conversion and migration — written for store owners.",
-    color: "#0ea5e9",
-    status: "running",
-  },
-  {
-    code: "ATL",
-    name: "Atlasway",
-    url: null,
-    blurb: "In the garage. Not on track yet.",
-    color: "#8a8f98",
-    status: "garage",
   },
 ];
 
@@ -50,10 +64,10 @@ export const products = [
 export const buildLog = [
   { step: "01", part: "Floor", title: "Ecommerce foundations", text: "WooCommerce and Shopify stores that carry real revenue — the flat, boring, load-bearing part." },
   { step: "02", part: "Sidepods", title: "Infrastructure", text: "Servers, DNS, edge, CI. Cooling for everything that runs hot." },
-  { step: "03", part: "Power unit", title: "Odinzone Labs", text: "The engine: the company that builds and runs the products." },
-  { step: "04", part: "Nose & wings", title: "Design & speed", text: "Designodin and Boltramp — the aero. Clean lines, less drag." },
-  { step: "05", part: "Cockpit", title: "Workodin", text: "The seat everything is driven from." },
-  { step: "06", part: "Wheels", title: "Shipped", text: "Payodin and whatever's next. Things that stay on the road." },
+  { step: "03", part: "Power unit", title: "Odinzone Labs", text: "The engine. Builds and runs Designodin, Atlasway and GoneGlobe." },
+  { step: "04", part: "Nose & wings", title: "Designodin", text: "The aero. Sites for US & EU businesses — clean lines, less drag." },
+  { step: "05", part: "Cockpit", title: "GoneGlobe", text: "Cityraze, Sailraze, Passraze — the seat every journey gets planned from." },
+  { step: "06", part: "Wheels", title: "Atlasway", text: "TODO: what Atlasway does, in one line." },
 ];
 
 export const links = [

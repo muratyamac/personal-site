@@ -1,5 +1,5 @@
 // ⌘K command palette + ` terminal. Both share one command list.
-import { profile, products, links, garage } from "./data.js";
+import { profile, teams, products, links, garage } from "./data.js";
 
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
@@ -24,6 +24,7 @@ export function initCommands({ getF1, getLego }) {
     { icon: "◐", label: "The garage — Hot Wheels", hint: "nav", run: () => go("garage") },
     { icon: "✉", label: "Contact", hint: "nav", run: () => go("contact") },
     ...products.filter((p) => p.url).map((p) => ({ icon: "↗", label: `Open ${p.name}`, hint: p.code, run: () => open(p.url) })),
+    ...products.flatMap((p) => (p.sub ?? []).map((x) => ({ icon: "↗", label: `Open ${x.name}`, hint: p.name, run: () => open(x.url) }))),
     ...links.map((l) => ({ icon: "↗", label: `Open ${l.label}`, hint: "link", run: () => open(l.url) })),
     { icon: ">_", label: "Open terminal", hint: "`", run: () => openTerm() },
     { icon: "⧉", label: "Copy page link", hint: "share", run: () => navigator.clipboard?.writeText(location.origin) },
@@ -106,7 +107,8 @@ export function initCommands({ getF1, getLego }) {
 
   const find = (arg) => {
     const a = (arg || "").toLowerCase();
-    return [...products, ...links.map((l) => ({ ...l, name: l.label, code: l.label }))].find(
+    const subs = products.flatMap((p) => (p.sub ?? []).map((x) => ({ ...x, code: x.name })));
+    return [...products, ...subs, ...links.map((l) => ({ ...l, name: l.label, code: l.label }))].find(
       (p) => p.name.toLowerCase() === a || p.code.toLowerCase() === a,
     );
   };
@@ -135,9 +137,15 @@ export function initCommands({ getF1, getLego }) {
         if (arg === "links") return links.forEach((l) => print(`  ${l.label.padEnd(14)}<a href="${l.url}" target="_blank" rel="noopener">${esc(l.handle)}</a>`));
         if (arg === "garage") return garage.forEach((c) => print(`  ${String(c.year).padEnd(6)}${esc(c.name)} <span class="dim">(${esc(c.series)})</span>`));
         if (arg && arg !== "products") return print(`<span class="r">ls: ${esc(arg)}: no such directory</span>`);
-        products.forEach((p) =>
-          print(`  ${p.status === "running" ? '<span class="g">●</span>' : '<span class="dim">○</span>'} ${p.code}  ${esc(p.name.padEnd(12))}<span class="dim">${esc(p.blurb)}</span>`),
-        );
+        teams.forEach((t) => {
+          print(`<span class="y">${esc(t.name)}/</span>`);
+          products
+            .filter((p) => p.team === t.name)
+            .forEach((p) => {
+              print(`  ${p.status === "running" ? '<span class="g">●</span>' : '<span class="dim">○</span>'} ${p.code}  ${esc(p.name.padEnd(12))}<span class="dim">${esc(p.blurb)}</span>`);
+              p.sub?.forEach((x) => print(`       └ ${esc(x.name)}`));
+            });
+        });
       },
     },
     open: {
