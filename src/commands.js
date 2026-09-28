@@ -166,7 +166,7 @@ export function initCommands({ getF1, getLego }) {
         print(`${d.season} · after round ${d.round}`);
         d.top.forEach((r) => print(`  ${String(r.pos).padStart(2)}  ${r.code}  ${String(r.points).padStart(4)}  <span class="dim">${esc(r.team)}</span>`));
         if (!d.top.some((r) => r.id === d.driver.id)) print(`  ${String(d.driver.pos).padStart(2)}  HAM  ${String(d.driver.points).padStart(4)}`);
-        print(`<span class="y">#44 — P${d.driver.pos}, ${d.driver.points} pts.</span> Still I rise.`);
+        print(`<span class="y">#44 — P${d.driver.pos}, ${d.driver.points} pts.</span>`);
         if (d.next) print(`next: ${esc(d.next.name)} — ${new Date(d.next.start).toLocaleString()}`);
       },
     },
@@ -202,8 +202,8 @@ export function initCommands({ getF1, getLego }) {
     sudo: { hidden: true, run: () => print(`<span class="r">nice try.</span> this incident will be reported to race control.`) },
     rm: { hidden: true, run: () => print(`<span class="r">rm: things here are built to stay.</span>`) },
     box: { hidden: true, run: () => print(`<span class="y">📻 box, box. box this lap.</span>`) },
-    lego: { hidden: true, run: () => print(`everything is awesome. try <span class="y">build</span>.`) },
-    44: { hidden: true, run: () => print(`<span class="p">purple sector.</span> still I rise.`) },
+    lego: { hidden: true, run: () => print(`one brick at a time. try <span class="y">build</span>.`) },
+    44: { hidden: true, run: () => print(`<span class="p">purple sector.</span>`) },
     date: { hidden: true, run: () => print(new Date().toString()) },
     pwd: { hidden: true, run: () => print("/home/murat/pitwall") },
     cat: {

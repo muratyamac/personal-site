@@ -68,7 +68,7 @@ const carSvg = (c) => `<svg viewBox="0 0 164 54" aria-hidden="true">
 $("#garage-track").innerHTML = garage
   .map(
     (c) => `<article class="hw" style="--c:${c.color}">
-      <div class="hw__top"><span class="hw__logo">HW</span><span class="mono dim">${c.year}</span></div>
+      <div class="hw__top"><span class="hw__logo">1:64</span><span class="mono dim">${c.year}</span></div>
       <div class="hw__stage">${carSvg(c)}</div>
       <h3>${esc(c.name)}</h3>
       <span class="mono dim">${esc(c.series)}</span>

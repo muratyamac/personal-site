@@ -411,7 +411,7 @@ mark { background: none; color: var(--yellow); }
 .hw:hover .hw__stage svg { transform: translateX(-42%); }
 .hw__top { display: flex; justify-content: space-between; align-items: center; }
 .hw h3 { margin: 0; font: 700 24px/1 var(--display); text-transform: uppercase; }
-.hw__logo { font: 900 italic 13px var(--display); background: var(--red); color: #fff; padding: 2px 8px; border-radius: 999px; transform: skew(-8deg); letter-spacing: 0.04em; }
+.hw__logo { font: 600 10px var(--mono); color: var(--c); border: 1px solid currentColor; padding: 3px 6px; border-radius: 3px; letter-spacing: 0.06em; }
 .garage__lego { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; color: var(--dim); }
 
 /* ——— Contact ——— */
@@ -434,6 +434,7 @@ mark { background: none; color: var(--yellow); }
 .contact__links a:hover { padding-left: 16px; color: var(--yellow); }
 .contact__links small { font: 400 11px var(--mono); color: var(--dim); letter-spacing: 0.06em; }
 
+.foot__legal { flex-basis: 100%; margin: 0; font-size: 9px; color: #5c616a; line-height: 1.6; }
 .foot {
   display: flex;
   justify-content: space-between;
