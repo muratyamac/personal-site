@@ -1,4 +1,4 @@
-import { profile, teams, products, buildLog, links, garage } from "./data.js";
+import { profile, teams, products, buildLog, links } from "./data.js";
 import { initCommands } from "./commands.js";
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -48,63 +48,6 @@ $("#timing-rows").innerHTML = teams
 $("#links").innerHTML = links
   .map((l) => `<li><a href="${l.url}" target="_blank" rel="noopener">${esc(l.label)} <small>${esc(l.handle)} ↗</small></a></li>`)
   .join("");
-
-// ——— Garage ———
-const bodies = {
-  muscle: "M8 40 L14 28 L40 24 L58 14 L96 14 L114 24 L150 27 L156 40 Z",
-  gt: "M6 40 L12 30 L46 24 L70 12 L104 12 L126 24 L154 30 L158 40 Z",
-  formula: "M4 40 L4 32 L30 32 L44 28 L66 28 L72 18 L86 18 L92 28 L140 30 L140 22 L158 22 L158 40 Z",
-  wagon: "M8 40 L12 26 L34 22 L50 12 L138 12 L150 24 L156 40 Z",
-};
-const carSvg = (c) => `<svg viewBox="0 0 164 54" aria-hidden="true">
-  <ellipse cx="82" cy="50" rx="74" ry="3" fill="rgba(0,0,0,.6)"/>
-  <path d="${bodies[c.body] ?? bodies.gt}" fill="${c.color}"/>
-  <path d="${bodies[c.body] ?? bodies.gt}" fill="url(#shine)" opacity=".35"/>
-  <circle cx="38" cy="40" r="10" fill="#111"/><circle cx="38" cy="40" r="4.5" fill="#bbb"/>
-  <circle cx="126" cy="40" r="10" fill="#111"/><circle cx="126" cy="40" r="4.5" fill="#bbb"/>
-  <defs><linearGradient id="shine" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
-</svg>`;
-
-$("#garage-track").innerHTML = garage
-  .map(
-    (c) => `<article class="hw" style="--c:${c.color}">
-      <div class="hw__top"><span class="hw__logo">1:64</span><span class="mono dim">${c.year}</span></div>
-      <div class="hw__stage">${carSvg(c)}</div>
-      <h3>${esc(c.name)}</h3>
-      <span class="mono dim">${esc(c.series)}</span>
-    </article>`,
-  )
-  .join("");
-
-// drag-to-scroll with momentum
-(() => {
-  const track = $("#garage-track");
-  let down = false, startX = 0, startScroll = 0, v = 0, lastX = 0, raf = 0, moved = false;
-  track.addEventListener("pointerdown", (e) => {
-    if (e.pointerType !== "mouse") return;
-    down = true; moved = false;
-    startX = lastX = e.clientX;
-    startScroll = track.scrollLeft;
-    cancelAnimationFrame(raf);
-    track.setPointerCapture(e.pointerId);
-  });
-  track.addEventListener("pointermove", (e) => {
-    if (!down) return;
-    if (Math.abs(e.clientX - startX) > 4) { moved = true; track.classList.add("dragging"); }
-    v = e.clientX - lastX; lastX = e.clientX;
-    track.scrollLeft = startScroll - (e.clientX - startX);
-  });
-  const up = () => {
-    if (!down) return;
-    down = false;
-    track.classList.remove("dragging");
-    if (!moved || reducedMotion) return;
-    const glide = () => { track.scrollLeft -= v; v *= 0.94; if (Math.abs(v) > 0.5) raf = requestAnimationFrame(glide); };
-    raf = requestAnimationFrame(glide);
-  };
-  track.addEventListener("pointerup", up);
-  track.addEventListener("pointercancel", up);
-})();
 
 // ——— F1 / ticker ———
 const f1State = { data: null };

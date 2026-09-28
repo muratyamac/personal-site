@@ -75,14 +75,3 @@ export const links = [
   { label: "GitHub", handle: "@muratyamac", url: "https://github.com/muratyamac" },
   { label: "Certificates", handle: "Coursera", url: "https://go.odinzone.com/muratcertificates" },
 ];
-
-// Hot Wheels garage. PLACEHOLDERS — replace with the real collection.
-// body: one of "muscle" | "gt" | "formula" | "wagon"
-export const garage = [
-  { name: "Placeholder No. 1", series: "Mainline", year: 2024, color: "#d7263d", body: "muscle" },
-  { name: "Placeholder No. 2", series: "Car Culture", year: 2023, color: "#1b98e0", body: "gt" },
-  { name: "Placeholder No. 3", series: "Premium", year: 2025, color: "#ffd400", body: "formula" },
-  { name: "Placeholder No. 4", series: "Treasure Hunt", year: 2022, color: "#2ec4b6", body: "wagon" },
-  { name: "Placeholder No. 5", series: "Mainline", year: 2026, color: "#f46036", body: "gt" },
-  { name: "Placeholder No. 6", series: "Boulevard", year: 2024, color: "#e6e6e6", body: "muscle" },
-];

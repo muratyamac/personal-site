@@ -261,7 +261,7 @@ mark { background: none; color: var(--yellow); }
   text-transform: uppercase;
 }
 .section-sub { margin: 4px 0 0; color: var(--dim); }
-.grid, .pitwall, .garage, .contact { padding: clamp(80px, 12vw, 160px) var(--gutter) 0; }
+.grid, .pitwall, .contact { padding: clamp(80px, 12vw, 160px) var(--gutter) 0; }
 
 /* ——— Timing screen ——— */
 .timing { border-top: 2px solid var(--text); }
@@ -368,51 +368,6 @@ mark { background: none; color: var(--yellow); }
 .standings li.me { color: var(--yellow); }
 .standings li.me::after { content: ""; }
 .standings li .p1 { color: var(--purple); }
-
-/* ——— Garage ——— */
-.garage__track {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  scroll-snap-type: x proximity;
-  padding: 8px var(--gutter) 28px;
-  margin: 0 calc(var(--gutter) * -1);
-  cursor: grab;
-  scrollbar-width: none;
-  position: relative;
-}
-.garage__track::-webkit-scrollbar { display: none; }
-.garage__track.dragging { cursor: grabbing; scroll-snap-type: none; }
-.garage__track.dragging * { pointer-events: none; }
-.hw {
-  flex: 0 0 min(300px, 78vw);
-  scroll-snap-align: start;
-  background: linear-gradient(160deg, var(--carbon-3), var(--carbon-2));
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 18px;
-  display: grid;
-  gap: 12px;
-  transition: transform 0.4s var(--ease), border-color 0.3s;
-  user-select: none;
-}
-.hw:hover { transform: translateY(-6px) rotate(-0.6deg); border-color: var(--c); }
-.hw__stage {
-  position: relative;
-  height: 120px;
-  border-radius: 6px;
-  background:
-    linear-gradient(180deg, transparent 70%, rgba(255,120,0,.18) 70%, rgba(255,120,0,.18) 78%, transparent 78%),
-    radial-gradient(ellipse at 50% 90%, rgba(255,255,255,.06), transparent 60%),
-    var(--carbon);
-  overflow: hidden;
-}
-.hw__stage svg { position: absolute; left: 50%; bottom: 14px; width: 82%; transform: translateX(-50%); transition: transform 0.6s var(--ease); }
-.hw:hover .hw__stage svg { transform: translateX(-42%); }
-.hw__top { display: flex; justify-content: space-between; align-items: center; }
-.hw h3 { margin: 0; font: 700 24px/1 var(--display); text-transform: uppercase; }
-.hw__logo { font: 600 10px var(--mono); color: var(--c); border: 1px solid currentColor; padding: 3px 6px; border-radius: 3px; letter-spacing: 0.06em; }
-.garage__lego { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; color: var(--dim); }
 
 /* ——— Contact ——— */
 .contact { padding-bottom: 80px; }

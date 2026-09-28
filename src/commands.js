@@ -1,5 +1,5 @@
 // ⌘K command palette + ` terminal. Both share one command list.
-import { profile, teams, products, links, garage } from "./data.js";
+import { profile, teams, products, links } from "./data.js";
 
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
@@ -21,7 +21,6 @@ export function initCommands({ getF1, getLego }) {
     { icon: "▣", label: "Build the LEGO car", hint: "nav", run: () => go("build") },
     { icon: "≡", label: "The grid — products", hint: "nav", run: () => go("grid") },
     { icon: "44", label: "Pit wall — Lewis & next race", hint: "nav", run: () => go("f1") },
-    { icon: "◐", label: "The garage — Hot Wheels", hint: "nav", run: () => go("garage") },
     { icon: "✉", label: "Contact", hint: "nav", run: () => go("contact") },
     ...products.filter((p) => p.url).map((p) => ({ icon: "↗", label: `Open ${p.name}`, hint: p.code, run: () => open(p.url) })),
     ...products.flatMap((p) => (p.sub ?? []).map((x) => ({ icon: "↗", label: `Open ${x.name}`, hint: p.name, run: () => open(x.url) }))),
@@ -132,10 +131,9 @@ export function initCommands({ getF1, getLego }) {
       },
     },
     ls: {
-      desc: "ls [products|links|garage]",
+      desc: "ls [products|links]",
       run: (arg = "") => {
         if (arg === "links") return links.forEach((l) => print(`  ${l.label.padEnd(14)}<a href="${l.url}" target="_blank" rel="noopener">${esc(l.handle)}</a>`));
-        if (arg === "garage") return garage.forEach((c) => print(`  ${String(c.year).padEnd(6)}${esc(c.name)} <span class="dim">(${esc(c.series)})</span>`));
         if (arg && arg !== "products") return print(`<span class="r">ls: ${esc(arg)}: no such directory</span>`);
         teams.forEach((t) => {
           print(`<span class="y">${esc(t.name)}/</span>`);
