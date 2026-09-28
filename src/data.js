@@ -31,7 +31,7 @@ export const products = [
     name: "Atlasway",
     team: "Odinzone Labs LLC",
     url: "https://atlasway.co",
-    blurb: "Residency, second passports and company formation — what fits, then done.",
+    blurb: "Guides for living and doing business abroad.",
     color: "#c2502a",
     status: "running",
   },
@@ -67,7 +67,7 @@ export const buildLog = [
   { step: "03", part: "Power unit", title: "Odinzone Labs", text: "The engine. Builds and runs Designodin, Atlasway and GoneGlobe." },
   { step: "04", part: "Nose & wings", title: "Designodin", text: "The aero. Sites for US & EU businesses — clean lines, less drag." },
   { step: "05", part: "Cockpit", title: "GoneGlobe", text: "Cityraze, Sailraze, Passraze — the seat every journey gets planned from." },
-  { step: "06", part: "Wheels", title: "Atlasway", text: "Residency, citizenship and companies across borders. Wheels for going anywhere." },
+  { step: "06", part: "Wheels", title: "Atlasway", text: "Guides for living and doing business abroad. Wheels for going further." },
 ];
 
 export const links = [
