@@ -205,7 +205,9 @@ let lego = null;
 
 // Progress follows the step captions: each step that crosses the
 // viewport's midline adds 1/n of the car.
-function onScroll() {
+let lastActive = -1;
+function measure() {
+  scrollQueued = false;
   const mid = innerHeight * 0.6;
   let p = 0;
   let active = 0;
@@ -216,8 +218,18 @@ function onScroll() {
       p = (i + Math.min(1, (mid - r.top) / r.height)) / steps.length;
     }
   });
-  steps.forEach((li, i) => li.classList.toggle("on", i === active));
+  if (active !== lastActive) {
+    lastActive = active;
+    steps.forEach((li, i) => li.classList.toggle("on", i === active));
+  }
   lego?.setProgress(Math.min(1, p / 0.9)); // finish before the last caption leaves
+}
+// at most one measurement per frame; phones fire scroll events faster than they paint
+let scrollQueued = false;
+function onScroll() {
+  if (scrollQueued) return;
+  scrollQueued = true;
+  requestAnimationFrame(measure);
 }
 addEventListener("scroll", onScroll, { passive: true });
 onScroll();

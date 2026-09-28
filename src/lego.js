@@ -58,12 +58,15 @@ const WHEELS = [
 const STAGES = 6;
 
 export function createLego(canvas, { reducedMotion = false, onCount } = {}) {
+  // phones: fewer pixels and cheaper shadows; the car is small on screen anyway
+  const coarse = matchMedia("(pointer: coarse)").matches;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(devicePixelRatio, coarse ? 1.5 : 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = coarse ? THREE.PCFShadowMap : THREE.PCFSoftShadowMap;
+  renderer.shadowMap.autoUpdate = false; // light is fixed; redraw shadows only while bricks move
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 200);
@@ -73,7 +76,7 @@ export function createLego(canvas, { reducedMotion = false, onCount } = {}) {
   const key = new THREE.DirectionalLight(0xffffff, 2.4);
   key.position.set(12, 22, 14);
   key.castShadow = true;
-  key.shadow.mapSize.set(1024, 1024);
+  key.shadow.mapSize.setScalar(coarse ? 512 : 1024);
   Object.assign(key.shadow.camera, { left: -16, right: 16, top: 16, bottom: -16 });
   scene.add(key);
   const rim = new THREE.DirectionalLight(0xffd400, 1.2);
@@ -160,6 +163,7 @@ export function createLego(canvas, { reducedMotion = false, onCount } = {}) {
       isWheel,
       from: new THREE.Vector3(target.x + (seed - 0.5) * 10, target.y + 14 + seed * 6, target.z + (Math.random() - 0.5) * 10),
       spin: (seed - 0.5) * 2.4,
+      t: 0,
       baseRotX: obj.rotation.x,
     };
   }
@@ -172,6 +176,7 @@ export function createLego(canvas, { reducedMotion = false, onCount } = {}) {
   let visible = true;
   let t0 = performance.now();
   let camDist = 34;
+  let dirty = true; // something changed that needs a redraw
 
   const ease = (t) => 1 - Math.pow(1 - t, 3);
   const bounce = (t) => {
@@ -192,6 +197,7 @@ export function createLego(canvas, { reducedMotion = false, onCount } = {}) {
     // push the car right on wide screens so captions sit on the left
     car.position.x = narrow ? 0 : Math.min(7, (w / h) * 2.4);
     car.position.z = narrow ? 0 : -1;
+    dirty = true;
   }
   new ResizeObserver(layout).observe(canvas);
   layout();
@@ -203,10 +209,12 @@ export function createLego(canvas, { reducedMotion = false, onCount } = {}) {
 
   new IntersectionObserver(([e]) => {
     visible = e.isIntersecting;
+    dirty = true;
     if (visible) loop();
   }).observe(canvas);
 
   let lastCount = -1;
+  let lastCam = "";
   let rafId = 0;
   function frame(now) {
     const dt = Math.min(0.05, (now - t0) / 1000);
@@ -214,6 +222,7 @@ export function createLego(canvas, { reducedMotion = false, onCount } = {}) {
     shown += (progress - shown) * (reducedMotion ? 1 : Math.min(1, dt * 6));
 
     let count = 0;
+    let moved = false;
     for (const p of pieces) {
       const [i, n] = p.slot;
       // each stage owns 1/STAGES of progress; pieces within it are staggered
@@ -221,6 +230,9 @@ export function createLego(canvas, { reducedMotion = false, onCount } = {}) {
       const local = (shown - stageStart) * STAGES; // 0..1 across the stage
       const start = (i / n) * 0.6;
       const t = Math.min(1, Math.max(0, (local - start) / 0.4));
+      if (t === p.t) { if (t >= 1) count++; continue; }
+      p.t = t;
+      moved = true;
       p.obj.visible = t > 0;
       if (t >= 1) count++;
       if (!p.obj.visible) continue;
@@ -233,7 +245,14 @@ export function createLego(canvas, { reducedMotion = false, onCount } = {}) {
     // camera orbits gently; done = slow turntable
     const time = now / 1000;
     const done = shown > 0.995;
-    const baseAngle = -0.75 + shown * 1.1 + (done && !reducedMotion ? Math.sin(time * 0.25) * 0.35 : 0);
+    const turntable = done && !reducedMotion;
+    const cam = `${shown.toFixed(4)}|${pointerX}|${pointerY}`;
+    // idle and nothing moved: skip the frame entirely
+    if (!moved && !turntable && !dirty && cam === lastCam) return;
+    lastCam = cam;
+    dirty = false;
+    if (moved) renderer.shadowMap.needsUpdate = true;
+    const baseAngle = -0.75 + shown * 1.1 + (turntable ? Math.sin(time * 0.25) * 0.35 : 0);
     const angle = baseAngle + pointerX * 0.35;
     const r = camDist;
     camera.position.set(Math.sin(angle) * r + car.position.x * 0.2, 15 + pointerY * -4, Math.cos(angle) * r);

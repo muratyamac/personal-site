@@ -52,7 +52,7 @@ body::before {
 body::after {
   content: "";
   position: fixed;
-  inset: -50%;
+  inset: 0;
   pointer-events: none;
   z-index: 100;
   opacity: 0.05;
@@ -536,4 +536,11 @@ mark { background: none; color: var(--yellow); }
   .countdown { gap: 14px; }
   .driver__stats { gap: 20px; }
   .driver__stats b { font-size: 44px; }
+}
+
+/* Phones: the grain overlay and header blur sit on top of the WebGL canvas and
+   get recomposited every frame while scrolling. Drop them on touch screens. */
+@media (pointer: coarse) {
+  body::after { display: none; }
+  .ticker { backdrop-filter: none; background: rgba(8, 9, 11, 0.96); }
 }
