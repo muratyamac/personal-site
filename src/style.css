@@ -449,10 +449,12 @@ mark { background: none; color: var(--yellow); }
 .garage__label[hidden] { display: none; }
 .garage__top {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
-  gap: 1px;
+  grid-template-columns: repeat(3, 1fr); /* 6 picks: always full rows */
+  column-gap: 32px;
   margin: 0 0 32px;
 }
+@media (max-width: 1000px) { .garage__top { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .garage__top { grid-template-columns: 1fr; } }
 .hwtop {
   display: grid;
   grid-template-columns: auto 1fr;

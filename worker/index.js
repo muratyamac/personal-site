@@ -101,6 +101,7 @@ async function garage(request, env, ctx) {
         `SELECT id, car_name AS name, series, ${shine("nickname")} AS nick,
                 ${shine("personality")} AS blurb, ${shine("rating")} AS rating
          FROM cars WHERE garage_key = ?1 AND ${shine("rating")} >= 9
+         GROUP BY car_name -- duplicates of the same casting count once
          ORDER BY random() LIMIT 6`,
       ).bind(GARAGE),
     ]);
