@@ -1,4 +1,4 @@
-import { profile, teams, products, buildLog, links, garage } from "./data.js";
+import { profile, teams, products, buildLog, links } from "./data.js";
 import { initCommands } from "./commands.js";
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -65,16 +65,75 @@ const carSvg = (c) => `<svg viewBox="0 0 164 54" aria-hidden="true">
   <defs><linearGradient id="shine" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
 </svg>`;
 
-$("#garage-track").innerHTML = garage
-  .map(
-    (c) => `<article class="hw" style="--c:${c.color}">
-      <div class="hw__top"><span class="hw__logo">1:64</span><span class="mono dim">${c.year}</span></div>
-      <div class="hw__stage">${carSvg(c)}</div>
+// Body shape and paint are picked from the car's name / id — the database
+// has no photos, so each card gets a stylised silhouette.
+const PAINT = ["#d7263d", "#1b98e0", "#ffd400", "#2ec4b6", "#f46036", "#e6e6e6", "#b138dd", "#00d26a", "#ff5fa2", "#8a9bb0"];
+function bodyFor(name) {
+  if (/formula|indy|f1|grand prix|open wheel|racer|roadster|speedster/i.test(name)) return "formula";
+  if (/wagon|van|bus|truck|jeep|bronco|rover|defender|4x4|pickup|ute|hauler|camper|transporter/i.test(name)) return "wagon";
+  if (/camaro|mustang|charger|challenger|chevelle|nova|firebird|cuda|gto|dodge|pontiac|plymouth|mercury|buick|oldsmobile|impala|'[5-7]\d/i.test(name)) return "muscle";
+  return "gt";
+}
+const carLook = (c) => ({ body: bodyFor(c.name), color: PAINT[c.id % PAINT.length] });
+const monthYear = (d) => (d ? new Date(`${d}T00:00:00Z`).toLocaleDateString("en-GB", { month: "short", year: "numeric", timeZone: "UTC" }) : "");
+
+const garageState = { data: null };
+const track = $("#garage-track");
+track.innerHTML = Array.from({ length: 4 }, () => `<article class="hw hw--ghost" aria-hidden="true"><div class="hw__stage"></div></article>`).join("");
+
+async function loadGarage() {
+  try {
+    const res = await fetch("/api/garage");
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    garageState.data = data;
+    renderGarage(data);
+  } catch (err) {
+    track.innerHTML = `<p class="garage__closed mono dim">The garage is closed right now. Back after the pit stop.</p>`;
+  }
+}
+
+function renderGarage({ stats, latest, top }) {
+  const statList = [
+    [stats.cars, "Cars"],
+    [stats.series, "Series"],
+    [stats.complete.length, "Full sets", stats.complete.join(", ")],
+    [`+${stats.thisYear}`, `In ${new Date().getFullYear()}`],
+  ];
+  $("#garage-stats").innerHTML = statList
+    .map(([v, k, title]) => `<div${title ? ` title="${esc(title)}"` : ""}><dt class="mono dim">${esc(k)}</dt><dd>${esc(v)}</dd></div>`)
+    .join("") + (stats.since ? `<div><dt class="mono dim">Collecting since</dt><dd>${esc(stats.since)}</dd></div>` : "");
+
+  track.innerHTML = latest
+    .map((c) => {
+      const look = carLook(c);
+      return `<article class="hw" style="--c:${look.color}">
+      <div class="hw__top"><span class="hw__logo">${esc(c.no || "1:64")}</span><span class="mono dim">${esc(monthYear(c.added))}</span></div>
+      <div class="hw__stage">${carSvg(look)}</div>
       <h3>${esc(c.name)}</h3>
-      <span class="mono dim">${esc(c.series)}</span>
-    </article>`,
-  )
-  .join("");
+      <span class="mono dim">${esc(c.series ?? "")}</span>
+      ${c.nick ? `<p class="hw__nick">“${esc(c.nick)}”</p>` : ""}
+    </article>`;
+    })
+    .join("");
+
+  if (top.length) {
+    $("#garage-top-label").hidden = false;
+    $("#garage-top").innerHTML = top
+      .map(
+        (c) => `<article class="hwtop" style="--c:${carLook(c).color}">
+        <span class="hwtop__rating" aria-label="Rated ${esc(c.rating)} out of 10">${esc(c.rating)}<small>/10</small></span>
+        <div>
+          <h3>${esc(c.nick ?? c.name)}</h3>
+          <span class="mono dim">${esc(c.name)} · ${esc(c.series ?? "")}</span>
+          ${c.blurb ? `<p>${esc(c.blurb)}</p>` : ""}
+        </div>
+      </article>`,
+      )
+      .join("");
+  }
+}
+loadGarage();
 
 // drag-to-scroll with momentum
 (() => {
@@ -256,4 +315,4 @@ new IntersectionObserver(
 ).observe(canvas);
 
 // ——— Palette + terminal ———
-initCommands({ getF1: () => f1State.data, getLego: () => lego });
+initCommands({ getF1: () => f1State.data, getLego: () => lego, getGarage: () => garageState.data });

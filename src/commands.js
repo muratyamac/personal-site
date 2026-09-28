@@ -1,12 +1,12 @@
 // ⌘K command palette + ` terminal. Both share one command list.
-import { profile, teams, products, links, garage } from "./data.js";
+import { profile, teams, products, links } from "./data.js";
 
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 const open = (url) => window.open(url, "_blank", "noopener");
 
-export function initCommands({ getF1, getLego }) {
+export function initCommands({ getF1, getLego, getGarage }) {
   const palette = $("#palette");
   const pInput = $("#palette-input");
   const pList = $("#palette-list");
@@ -135,7 +135,12 @@ export function initCommands({ getF1, getLego }) {
       desc: "ls [products|links|garage]",
       run: (arg = "") => {
         if (arg === "links") return links.forEach((l) => print(`  ${l.label.padEnd(14)}<a href="${l.url}" target="_blank" rel="noopener">${esc(l.handle)}</a>`));
-        if (arg === "garage") return garage.forEach((c) => print(`  ${String(c.year).padEnd(6)}${esc(c.name)} <span class="dim">(${esc(c.series)})</span>`));
+        if (arg === "garage") {
+          const g = getGarage();
+          if (!g) return print(`<span class="dim">garage still loading… try again in a sec.</span>`);
+          print(`<span class="y">${g.stats.cars} cars</span> <span class="dim">· ${g.stats.series} series · since ${g.stats.since}</span>`);
+          return g.latest.forEach((c) => print(`  ${esc((c.added ?? "").padEnd(12))}${esc(c.name)} <span class="dim">(${esc(c.series ?? "")})</span>`));
+        }
         if (arg && arg !== "products") return print(`<span class="r">ls: ${esc(arg)}: no such directory</span>`);
         teams.forEach((t) => {
           print(`<span class="y">${esc(t.name)}/</span>`);

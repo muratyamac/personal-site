@@ -412,6 +412,59 @@ mark { background: none; color: var(--yellow); }
 .hw__top { display: flex; justify-content: space-between; align-items: center; }
 .hw h3 { margin: 0; font: 700 24px/1 var(--display); text-transform: uppercase; }
 .hw__logo { font: 600 10px var(--mono); color: var(--c); border: 1px solid currentColor; padding: 3px 6px; border-radius: 3px; letter-spacing: 0.06em; }
+.hw__nick { margin: 0; color: var(--text); opacity: 0.8; font-style: italic; font-size: 14px; }
+.hw--ghost { min-height: 260px; opacity: 0.35; }
+.hw--ghost .hw__stage { animation: pulse 1.4s infinite; }
+.garage__closed { padding: 24px 0; }
+.garage__stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  margin: 0 0 40px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.garage__stats:empty { display: none; }
+@media (max-width: 700px) {
+  .garage__stats { grid-template-columns: repeat(2, 1fr); }
+  .garage__stats > div:last-child { grid-column: span 2; }
+}
+.garage__stats > div { background: var(--carbon-2); padding: 16px 18px; }
+.garage__stats dt { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+.garage__stats dd { margin: 6px 0 0; font: 700 clamp(32px, 5vw, 48px)/1 var(--display); color: var(--yellow); font-variant-numeric: tabular-nums; }
+.garage__label {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 8px;
+}
+.garage__label[hidden] { display: none; }
+.garage__top {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 1px;
+  margin: 0 0 32px;
+}
+.hwtop {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  padding: 18px 4px;
+  border-bottom: 1px solid var(--line);
+}
+.hwtop__rating { font: 900 44px/0.9 var(--display); color: var(--purple); }
+.hwtop__rating small { font: 400 11px var(--mono); color: var(--dim); margin-left: 2px; }
+.hwtop h3 { margin: 0 0 4px; font: 700 22px/1.05 var(--display); text-transform: uppercase; }
+.hwtop .mono { font-size: 11px; }
+.hwtop p { margin: 8px 0 0; font-size: 14px; color: var(--dim); }
 .garage__lego { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; color: var(--dim); }
 
 /* ——— Contact ——— */

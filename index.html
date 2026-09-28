@@ -133,9 +133,13 @@
         <header class="section-head">
           <span class="mono dim">04 — Off the clock</span>
           <h2>The garage</h2>
-          <p class="section-sub">1:64 scale. Drag the track →</p>
+          <p class="section-sub">1:64 scale. Live from my collection database.</p>
         </header>
-        <div class="garage__track" id="garage-track" tabindex="0" aria-label="Hot Wheels collection, scrollable"></div>
+        <dl class="garage__stats" id="garage-stats" aria-live="polite"></dl>
+        <div class="garage__label mono"><span>Latest additions</span><span class="dim">Drag the track →</span></div>
+        <div class="garage__track" id="garage-track" tabindex="0" aria-label="Latest Hot Wheels additions, scrollable"></div>
+        <div class="garage__label mono" id="garage-top-label" hidden><span>Top rated</span><span class="dim">A few 9/10s, reshuffled every hour</span></div>
+        <div class="garage__top" id="garage-top"></div>
         <div class="garage__lego mono">
           <span>Also building:</span> <span class="chip">LEGO</span> <span class="chip">Hot Wheels</span> <span class="chip">F1</span>
         </div>
