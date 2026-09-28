@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Murat Yamac — I build things that stay.</title>
+    <meta name="description" content="Murat Yamac — founder of Odinzone Labs LLC and Workodin LLC. Ecommerce & DevOps. I build things that stay." />
+    <meta name="theme-color" content="#08090b" />
+    <meta property="og:title" content="Murat Yamac — I build things that stay." />
+    <meta property="og:description" content="Founder · Ecommerce & DevOps. Odinzone Labs LLC / Workodin LLC." />
+    <meta property="og:url" content="https://muratyamac.bio" />
+    <meta property="og:type" content="profile" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Martian+Mono:wght@300;400;600&family=Instrument+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <a class="skip" href="#grid">Skip to content</a>
+
+    <!-- Timing ticker -->
+    <header class="ticker" aria-label="Status bar">
+      <div class="ticker__left">
+        <span class="live"><i></i>LIVE</span>
+        <span class="ticker__id">MY<b>/</b>BIO</span>
+      </div>
+      <div class="ticker__track" aria-hidden="true"><div class="ticker__run" id="ticker-run"></div></div>
+      <button class="kbd-hint" id="open-palette" type="button" aria-label="Open command palette">
+        <kbd>⌘</kbd><kbd>K</kbd>
+      </button>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero" id="top">
+        <div class="hero__grid" aria-hidden="true"></div>
+        <div class="hero__meta">
+          <span class="chip chip--yellow">P1</span>
+          <span class="mono dim">Founder · Ecommerce &amp; DevOps</span>
+        </div>
+        <h1 class="hero__name">
+          <span class="line"><span>Murat</span></span>
+          <span class="line"><span>Yamac<em>.</em></span></span>
+        </h1>
+        <div class="hero__row">
+          <p class="hero__tag">I build things<br />that <mark>stay.</mark></p>
+          <figure class="hero__card">
+            <img id="avatar" alt="Portrait of Murat Yamac" width="96" height="96" />
+            <figcaption>
+              <span class="mono">Odinzone Labs LLC</span>
+              <span class="mono">Workodin LLC</span>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="hero__foot mono">
+          <span>Scroll to build</span>
+          <span class="arrow" aria-hidden="true">↓</span>
+          <span class="dim">or press <kbd>`</kbd> for a terminal</span>
+        </div>
+      </section>
+
+      <!-- LEGO build log -->
+      <section class="build" id="build" aria-label="Build log">
+        <div class="build__sticky">
+          <canvas id="lego" aria-label="A LEGO Formula 1 car assembling brick by brick" role="img"></canvas>
+          <div class="build__hud mono" aria-hidden="true">
+            <span>BRICKS <b id="brick-count">000</b></span>
+            <span>BUILD <b id="build-pct">0%</b></span>
+          </div>
+        </div>
+        <ol class="build__steps" id="build-steps"></ol>
+      </section>
+
+      <!-- Product grid -->
+      <section class="grid" id="grid">
+        <header class="section-head">
+          <span class="mono dim">02 — The grid</span>
+          <h2>What's on track</h2>
+        </header>
+        <div class="timing" role="table" aria-label="Products">
+          <div class="timing__head mono" role="row">
+            <span role="columnheader">Pos</span>
+            <span role="columnheader">Car</span>
+            <span role="columnheader">Description</span>
+            <span role="columnheader">Status</span>
+          </div>
+          <div id="timing-rows"></div>
+        </div>
+      </section>
+
+      <!-- F1 pit wall -->
+      <section class="pitwall" id="f1">
+        <header class="section-head">
+          <span class="mono dim">03 — Pit wall</span>
+          <h2>Still I rise.</h2>
+        </header>
+        <div class="pitwall__grid">
+          <article class="driver" id="driver">
+            <div class="driver__num" aria-hidden="true">44</div>
+            <div class="driver__body">
+              <span class="mono dim">Sir Lewis Hamilton</span>
+              <div class="driver__stats">
+                <div><span class="mono dim">Position</span><b id="d-pos">—</b></div>
+                <div><span class="mono dim">Points</span><b id="d-pts">—</b></div>
+                <div><span class="mono dim">Gap to P1</span><b id="d-gap">—</b></div>
+              </div>
+              <span class="mono dim" id="d-team"></span>
+            </div>
+          </article>
+          <article class="next">
+            <span class="mono dim">Lights out in</span>
+            <div class="countdown" id="countdown" aria-live="off">
+              <div><b data-u="d">--</b><span>days</span></div>
+              <div><b data-u="h">--</b><span>hrs</span></div>
+              <div><b data-u="m">--</b><span>min</span></div>
+              <div><b data-u="s">--</b><span>sec</span></div>
+            </div>
+            <p class="next__race" id="next-race">Loading next race…</p>
+          </article>
+          <article class="standings">
+            <span class="mono dim" id="standings-label">Drivers' championship</span>
+            <ol id="standings"></ol>
+          </article>
+        </div>
+      </section>
+
+      <!-- Hot Wheels garage -->
+      <section class="garage" id="garage">
+        <header class="section-head">
+          <span class="mono dim">04 — Off the clock</span>
+          <h2>The garage</h2>
+          <p class="section-sub">1:64 scale. Drag the track →</p>
+        </header>
+        <div class="garage__track" id="garage-track" tabindex="0" aria-label="Hot Wheels collection, scrollable"></div>
+        <div class="garage__lego mono">
+          <span>Also building:</span> <span class="chip">LEGO</span> <span class="chip">Hot Wheels</span> <span class="chip">F1</span>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section class="contact" id="contact">
+        <span class="mono dim">05 — Radio</span>
+        <h2 class="contact__big">Box, box.<br /><span>Let's talk.</span></h2>
+        <ul class="contact__links" id="links"></ul>
+      </section>
+    </main>
+
+    <footer class="foot mono">
+      <span>© <span id="year"></span> Murat Yamac</span>
+      <span class="dim">Built on Cloudflare. No trackers. Press <kbd>⌘K</kbd>.</span>
+    </footer>
+
+    <!-- Command palette -->
+    <div class="palette" id="palette" hidden>
+      <div class="palette__backdrop" data-close></div>
+      <div class="palette__box" role="dialog" aria-modal="true" aria-label="Command palette">
+        <input id="palette-input" type="text" placeholder="Type a command or search…" autocomplete="off" spellcheck="false" />
+        <ul id="palette-list" role="listbox"></ul>
+        <div class="palette__foot mono dim"><span>↑↓ navigate</span><span>↵ run</span><span>esc close</span></div>
+      </div>
+    </div>
+
+    <!-- Terminal -->
+    <div class="term" id="term" hidden>
+      <div class="term__box" role="dialog" aria-modal="true" aria-label="Terminal">
+        <div class="term__bar mono"><span>murat@pitwall: ~</span><button type="button" data-close aria-label="Close terminal">×</button></div>
+        <div class="term__out mono" id="term-out" aria-live="polite"></div>
+        <label class="term__line mono"><span class="term__ps">❯</span><input id="term-input" type="text" autocomplete="off" spellcheck="false" aria-label="Terminal input" /></label>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
