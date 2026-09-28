@@ -3,6 +3,8 @@
   "name": "muratyamac-bio",
   "main": "worker/index.js",
   "compatibility_date": "2026-09-01",
+  // Runs before every deploy/dev, so dist/ exists in Workers Builds too.
+  "build": { "command": "npm run build", "watch_dir": ["src", "public", "index.html"] },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
